@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leave Management System</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #e8f5e9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .container {
+      max-width: 700px;
+      background: #fff;
+      margin: 30px auto;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #388e3c;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    button {
+      background: #388e3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      background: #2e7d32;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #388e3c;
+      color: white;
+    }
+    .status {
+      font-weight: bold;
+    }
+    .approved { color: green; }
+    .pending { color: orange; }
+    .rejected { color: red; }
+  </style>
+</head>
+<body>
+  <header>Leave Management System</header>
+
+  <div class="container">
+    <h2>Apply for Leave</h2>
+    <form id="leaveForm">
+      <label for="name">Employee Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+
+      <label for="type">Leave Type</label>
+      <select id="type" required>
+        <option value="">Select Leave Type</option>
+        <option value="Casual Leave">Casual Leave</option>
+        <option value="Sick Leave">Sick Leave</option>
+        <option value="Earned Leave">Earned Leave</option>
+      </select>
+
+      <label for="from">From Date</label>
+      <input type="date" id="from" required>
+
+      <label for="to">To Date</label>
+      <input type="date" id="to" required>
+
+      <label for="reason">Reason</label>
+      <textarea id="reason" rows="3" placeholder="Enter reason for leave" required></textarea>
+
+      <button type="submit">Apply Leave</button>
+    </form>
+
+    <h2>Leave Applications</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Reason</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="leaveTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const form = document.getElementById('leaveForm');
+    const tableBody = document.getElementById('leaveTable');
+
+    const leaves = [];
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const type = document.getElementById('type').value;
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      const reason = document.getElementById('reason').value;
+
+      const leave = {
+        name, type, from, to, reason, status: 'Pending'
+      };
+
+      leaves.push(leave);
+      displayLeaves();
+      form.reset();
+    });
+
+    function displayLeaves() {
+      tableBody.innerHTML = '';
+      leaves.forEach((leave, index) => {
+        const row = `
+          <tr>
+            <td>${leave.name}</td>
+            <td>${leave.type}</td>
+            <td>${leave.from}</td>
+            <td>${leave.to}</td>
+            <td>${leave.reason}</td>
+            <td class="status ${leave.status.toLowerCase()}">${leave.status}</td>
+          </tr>`;
+        tableBody.innerHTML += row;
+      });
+    }
+  </script>
+</body>
+</html>
